@@ -60,7 +60,9 @@ export class CommandHandler {
         const remaining = Math.ceil((cmd.cooldown * 1000 - (now - lastUsed)) / 1000);
         return `⏳ Attends *${remaining}s* avant de réutiliser *!${name}*`;
       }
-      
+          const { db } = await import('./database/database');
+    db.addCommand(jid);
+
       userCooldowns.set(ctx.jid, now);
       this.cooldowns.set(name, userCooldowns);
     }
