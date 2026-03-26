@@ -124,7 +124,10 @@ class AsakusaXMD {
   private async processMessage(msg: any) {
     const startTime = Date.now();
     const jid = msg.key.remoteJid;
-    
+        // Track stats
+    const { db } = await import('./database/database');
+    db.addMessage(jid);
+
     // Extraction ultra-rapide du texte
     const messageContent = msg.message;
     if (!messageContent) return;
