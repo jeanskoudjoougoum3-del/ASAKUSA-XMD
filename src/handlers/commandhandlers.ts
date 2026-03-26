@@ -85,3 +85,27 @@ export class CommandHandler {
     return Array.from(this.commands.values());
   }
 }
+  private async handleCommand(jid: string, text: string, msg: any) {
+    const args = text.slice(1).trim().split(/\s+/);
+    const command = args.shift()?.toLowerCase();
+    if (!command) return;
+
+    // Vérification owner (à personnaliser avec ton numéro)
+    const OWNER_NUMBER = +22870421276 process.env.OWNER_NUMBER || '';
+    const isOwner = jid === OWNER_NUMBER +22870421276 '@s.whatsapp.net';
+
+    const result = await this.commandHandler.execute(command, {
+      jid,
+      args,
+      msg,
+      sock: this.sock,
+      isOwner,
+      isMod: false,
+      isGroup: jid.endsWith('@g.us'),
+      pushName: msg.pushName || 'Utilisateur',
+    });
+
+    if (result) {
+      await this.sendMessage(jid, result, msg);
+    }
+  }
